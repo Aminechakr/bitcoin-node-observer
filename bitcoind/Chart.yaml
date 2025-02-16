@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 appVersion: "28"
 description: Bitcoin node chart
 icon: https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1024px-Bitcoin.svg.png

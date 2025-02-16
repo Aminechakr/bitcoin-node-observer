@@ -1,0 +1,35 @@
+# Ignore the chart directory
+chart/
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore temporary files
+tmp/
+temp/
+
+# Ignore build directories
+dist/
+build/
+
+# Ignore Go test binaries
+*.test
+
+# Ignore Go vendor directory
+vendor/
+
+# Ignore editor directories and files
+.idea/
+.vscode/
+
+# Ignore Dockerfile and docker-compose files
+Dockerfile
+docker-compose.yml
+
+# Ignore Git files
+.git/
+.gitignore
+
+# Ignore configuration files
+config/

@@ -1,0 +1,16 @@
+image:
+  repository: chakrellah/bitcoin-exporter
+  tag: 1.0.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 9100
+
+config:
+  rpcURL: "http://bitcoind:38332"
+  metricsPort: 9100
+
+secret:
+  rpcUser: "foo"
+  rpcPassword: ""

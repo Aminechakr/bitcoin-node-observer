@@ -1,21 +1,33 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/aminechakr/bitcoin-exporter/internal"
 )
 
-const (
-	rpcURL      = "http://127.0.0.1:8332"
-	rpcUser     = "your_rpc_user"
-	rpcPassword = "your_rpc_password"
-)
-
 func main() {
+
+    rpcURL := os.Getenv("RPC_URL")
+    rpcUser := os.Getenv("RPC_USER")
+    rpcPassword := os.Getenv("RPC_PASSWORD")
+    metricsPortStr := os.Getenv("METRICS_PORT")
+
+    if rpcURL == "" || rpcUser == "" || rpcPassword == "" || metricsPortStr == "" {
+        log.Fatalf("Missing required configuration values")
+    }
+
+	metricsPort, err := strconv.Atoi(metricsPortStr)
+    if err != nil {
+        log.Fatalf("Invalid metrics port: %v", err)
+    }
+
 	prometheus.MustRegister(internal.BlockHeight)
 	prometheus.MustRegister(internal.NumPeers)
 
@@ -29,6 +41,9 @@ func main() {
 		}
 	}()
 
-	log.Println("Bitcoin Exporter running on :9100")
-	http.ListenAndServe(":9100", nil)
+	log.Printf("Bitcoin Exporter running on: %d", metricsPort)
+	log.Printf("RPC URL: %s", rpcURL)
+    log.Printf("RPC User: %s", rpcUser)
+    log.Printf("RPC Password: %s", rpcPassword)
+	http.ListenAndServe(fmt.Sprintf(":%d", metricsPort), nil)
 }

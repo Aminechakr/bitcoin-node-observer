@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bitcoin-exporter.fullname" . }}
+  labels:
+    app: {{ include "bitcoin-exporter.name" . }}
+    chart: {{ include "bitcoin-exporter.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "bitcoin-exporter.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "bitcoin-exporter.name" . }}
+    spec:
+      containers:
+        - name: bitcoin-exporter
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: RPC_URL
+              value: {{ .Values.config.rpcURL | quote }}
+            - name: METRICS_PORT
+              value: {{ .Values.config.metricsPort | quote }}
+            - name: RPC_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bitcoin-exporter-secret
+                  key: rpcUser
+            - name: RPC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bitcoin-exporter-secret
+                  key: rpcPassword
+          ports:
+            - containerPort: {{ .Values.config.metricsPort }}

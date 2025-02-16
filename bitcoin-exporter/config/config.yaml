@@ -1,4 +1,4 @@
-rpc_url: "http://127.0.0.1:8332"
-rpc_user: "your_rpc_user"
-rpc_password: "your_rpc_password"
-metrics_port: 9100
+RPC_URL: "http://127.0.0.1:38332"
+RPC_USER: "foo"
+RPC_PASSWORD: ""
+METRICS_PORT: 9100
