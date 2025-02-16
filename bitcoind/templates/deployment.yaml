@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bitcoind.name" . }}
+  labels:
+    app: {{ template "bitcoind.name" . }}
+    chart: {{ template "bitcoind.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ include "bitcoind.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "bitcoind.name" . }}
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        privileged: true
+      containers:
+        - name: {{ .Chart.Name }}
+          lifecycle:
+            preStop:
+              exec:
+                command: [
+                  # Gracefully shutdown bitcoind
+                  "/usr/local/bin/bitcoin-cli", "stop"
+                ]
+          {{ if ((.Values.image).digest) }}
+          image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+          {{ else }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{ end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          resources: 
+          {{ toYaml .Values.resources | nindent 12 }}
+          args:
+            - "-printtoconsole"
+            - "-signet=1"
+            - "-server=1"
+            - "-rpcallowip=0.0.0.0/0"
+            - "-rpcbind=0.0.0.0"
+            - "-rpcuser=$(RPCUSER)"
+            - "-rpcpassword=$(RPCPASSWORD)"
+            - "-rpcport=38332"
+          env:
+            - name: CONFIGMAP_SUM
+              value: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+            - name: SECRET_SUM
+              value: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+            - name: RPCPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: rpcpassword
+                  name: {{ include "bitcoind.name" . }}
+            - name: RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  key: rpcuser
+                  name: {{ include "bitcoind.name" . }}
+            - name: PRINTTOCONSOLE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: printtoconsole
+            - name: SIGNET
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: signet
+            - name: SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: server
+            - name: RPCALLOWIP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: rpcallowip
+            - name: RPCBIND
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: rpcbind
+            - name: RPCPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: rpcport
+            - name: DISABLEWALLET
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: disablewallet
+            - name: PRUNE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bitcoind.name" . }}
+                  key: prune
+            - name: BITCOIN_DATA
+              value: "/bitcoin/data"
+          ports:
+            - name: rpc
+              containerPort: 38332
+            - name: p2p
+              containerPort: 38333
+          volumeMounts:
+            - name: persistent-storage
+              mountPath: /bitcoin/data
+      volumes:
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: {{ include "bitcoind.name" . }}
