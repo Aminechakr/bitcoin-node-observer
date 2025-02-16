@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bitcoin-exporter-config
+data:
+  rpc_url: {{ .Values.config.rpcURL | quote }}
+  metrics_port: {{ .Values.config.metricsPort | quote }}

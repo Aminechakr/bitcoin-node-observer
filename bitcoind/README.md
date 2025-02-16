@@ -66,6 +66,7 @@ apt add curl net-tools procps
 #Check node info
 bitcoin-cli -rpcport=38332 -rpcuser=ojfknyQQ -rpcpassword=xxxxxxxxx getnetworkinfo
 bitcoin-cli -rpcport=38332 -rpcuser=ojfknyQQ -rpcpassword=xxxxxxxxx getblockchaininfo
+curl --user foo:xxxxxx --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getbestblockhash", "params": []}' -H 'content-type: text/plain;' http://localhost:38332/
 ````
 
 ## Parameters
