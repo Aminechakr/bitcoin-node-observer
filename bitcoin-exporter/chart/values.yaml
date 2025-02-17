@@ -12,5 +12,5 @@ config:
   metricsPort: 9100
 
 secret:
-  rpcUser: "foo"
-  rpcPassword: ""
+  rpcuser: "foo" #Fetched from bitcoind secret using Helm's lookup function
+  rpcpassword: "bar" #Fetched from bitcoind secret using Helm's lookup function

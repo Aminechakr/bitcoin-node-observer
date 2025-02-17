@@ -30,11 +30,11 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: bitcoin-exporter-secret
-                  key: rpcUser
+                  key: rpcuser
             - name: RPC_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: bitcoin-exporter-secret
-                  key: rpcPassword
+                  key: rpcpassword
           ports:
             - containerPort: {{ .Values.config.metricsPort }}
