@@ -21,3 +21,8 @@ docker run --rm -it \
 
 # Helm deploy
 - Check `README.md` of bitcoind for more details.
+
+
+# Exporter build/deploy
+- Check `README.md` of bitcoin-exporter for more details.
+

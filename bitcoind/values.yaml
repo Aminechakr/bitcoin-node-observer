@@ -17,6 +17,7 @@ configuration:
   disablewallet: 1 #disable wallet
   prune: 12000 #Reduce storage requirements by enabling pruning (deleting) of old blocks. >=12000 = target to stay under in MiB.
   rpcuser: "foo" #optional, if not quoted it will be generated"
+  rpcpassword: "bar" #optional, if not quoted it will be generated"
   passwordLength: 50 #the rpc password length
 
 # persistent volume settings

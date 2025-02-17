@@ -1,0 +1,33 @@
+bitcoind:
+  image:
+    repository: bitcoin/bitcoin
+    tag: 28
+    digest: sha256:40c4d17f6cf0b560a61d33a1d97ccb8b6d407db29e614d2c598cb9b2483a4383
+    pullPolicy: IfNotPresent
+  configuration:
+    printtoconsole: 1
+    signet: 1 
+    server: 1 
+    rpcallowip: 0.0.0.0/0
+    rpcbind: "0.0.0.0" 
+    rpcport: "38332"
+    disablewallet: 1 
+    prune: 12000 
+    rpcuser: "foo"
+    rpcpassword: "bar"
+    passwordLength: 50 
+
+bitcoin-exporter:
+  image:
+    repository: chakrellah/bitcoin-exporter
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9100
+  config:
+    rpcURL: "http://bitcoind:38332"
+    metricsPort: 9100
+  secret:
+    rpcuser: "foo"
+    rpcpassword: "bar"
