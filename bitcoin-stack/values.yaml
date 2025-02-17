@@ -35,7 +35,7 @@ bitcoin-exporter:
     rpcpassword: "bar"
 
 prometheus:
-  namespace: monitoring
+  forceNamespace: monitoring
   alertmanager:
     enabled: false
   pushgateway:
@@ -50,9 +50,46 @@ prometheus:
       limits:
         memory: 800Mi
         cpu: 400m
+  extraScrapeConfigs: |
+    - job_name: 'btc-exporter'
+      scrape_interval: 10s
+      static_configs:
+        - targets: ['bitcoin-stack-bitcoin-exporter.bitcoind.svc.cluster.local:9100']
+  #The following subcharts are disabled from the prometheus chart to be managed properly under the umbrella chart.
+  kube-state-metrics:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+
+## kube-state-metrics sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics
+##
+kube-state-metrics:
+  enabled: true
+  namespaceOverride: monitoring
+## prometheus-node-exporter sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-node-exporter
+##
+prometheus-node-exporter:
+  enabled: true
+  namespaceOverride: monitoring
+  rbac:
+    pspEnabled: false
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+## prometheus-pushgateway sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-pushgateway
+##
+prometheus-pushgateway:
+  enabled: true
+  namespaceOverride: monitoring
+  serviceAnnotations:
+    prometheus.io/probe: pushgateway
 
 grafana:
-  namespace: monitoring
+  namespaceOverride: monitoring
   adminUser: admin
   adminPassword: admin
   service:
@@ -71,8 +108,29 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://prometheus-server
+          url: http://bitcoin-stack-prometheus-server:80
           isDefault: true
+  dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: 'default'
+            orgId: 1
+            folder: ''
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      btc-dashboard:
+        url: https://raw.githubusercontent.com/aminechakr/bitcoin-node-observer/bitcoin-stack/dashboards/btc_exporter.json
+        datasource: Prometheus
+      node-exporter:
+        gnetId: 1860 
+        revision: 37
+        datasource: Prometheus
   rbac:
     pspEnabled: false
   podSecurityPolicy:
