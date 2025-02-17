@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "bitcoind.name" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ template "bitcoind.name" . }}
     chart: {{ template "bitcoind.chart" . }}
@@ -22,7 +23,6 @@ spec:
         runAsUser: 0
         runAsGroup: 0
         fsGroup: 0
-        privileged: true
       containers:
         - name: {{ .Chart.Name }}
           lifecycle:

@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Values.namespace }}
   name: {{ include "bitcoin-exporter.fullname" . }}
   labels:
     app: {{ include "bitcoin-exporter.name" . }}

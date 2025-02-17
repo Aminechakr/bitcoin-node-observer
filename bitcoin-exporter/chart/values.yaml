@@ -1,3 +1,4 @@
+namespace: bitcoind
 image:
   repository: chakrellah/bitcoin-exporter
   tag: 1.0.0

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: bitcoin-stack
-description: A Helm chart to deploy Bitcoin node and a custom exporter
+description: A Helm chart to deploy Bitcoin node, BTC exporter, Grafana, and Prometheus
 version: 0.1.0
 appVersion: "1.0"
 
@@ -11,3 +11,9 @@ dependencies:
   - name: bitcoin-exporter
     version: "0.1.0"
     repository: "file://../bitcoin-exporter/chart"
+  # - name: prometheus
+  #   version: "27.3.0"
+  #   repository: "https://prometheus-community.github.io/helm-charts"
+  # - name: grafana
+  #   version: "8.10.0"
+  #   repository: "https://grafana.github.io/helm-charts"

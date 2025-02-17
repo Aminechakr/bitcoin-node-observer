@@ -26,3 +26,5 @@ docker run --rm -it \
 # Exporter build/deploy
 - Check `README.md` of bitcoin-exporter for more details.
 
+# One click stack deploy
+- Check `RADME.md` of bitcoin-stack for more details.

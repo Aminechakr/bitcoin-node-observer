@@ -1,4 +1,5 @@
 bitcoind:
+  namespace: bitcoind
   image:
     repository: bitcoin/bitcoin
     tag: 28
@@ -18,6 +19,7 @@ bitcoind:
     passwordLength: 50 
 
 bitcoin-exporter:
+  namespace: bitcoind
   image:
     repository: chakrellah/bitcoin-exporter
     tag: 1.0.0
@@ -31,3 +33,49 @@ bitcoin-exporter:
   secret:
     rpcuser: "foo"
     rpcpassword: "bar"
+
+prometheus:
+  namespace: monitoring
+  alertmanager:
+    enabled: false
+  pushgateway:
+    enabled: false
+  server:
+    service:
+      type: ClusterIP
+    resources:
+      requests:
+        memory: 400Mi
+        cpu: 200m
+      limits:
+        memory: 800Mi
+        cpu: 400m
+
+grafana:
+  namespace: monitoring
+  adminUser: admin
+  adminPassword: admin
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      memory: 200Mi
+      cpu: 100m
+    limits:
+      memory: 400Mi
+      cpu: 200m
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://prometheus-server
+          isDefault: true
+  rbac:
+    pspEnabled: false
+  podSecurityPolicy:
+    enabled: false
+  testFramework:
+    enabled: false
