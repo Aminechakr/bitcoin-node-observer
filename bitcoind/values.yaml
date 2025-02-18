@@ -1,4 +1,4 @@
-
+namespace: bitcoind
 # Set the docker image version and tag
 image:
   repository: bitcoin/bitcoin
