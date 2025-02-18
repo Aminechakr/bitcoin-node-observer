@@ -16,7 +16,6 @@ helm uninstall bitcoind --namespace bitcoind
 
 This will setup a full node sync it with the signet network.
 
-
 ## Introduction
 
 This chart bootstraps a [bitcoin](https://github.com/bitcoin/bitcoin) deployment on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
