@@ -1,6 +1,6 @@
 ## Installing the Chart
 
-To install the chart with the release name `bitcoin-exporter`
+To deploy the chart with the release name `bitcoin-exporter`
 
 ````bash
 helm template bitcoin-exporter . -f values.yaml 
