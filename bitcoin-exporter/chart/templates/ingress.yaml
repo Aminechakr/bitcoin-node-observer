@@ -1,19 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: btc-exporter-ingress
-  namespace: bitcoind
+  name: {{ include "bitcoin-exporter.fullname" . }}
+  namespace: {{ .Values.namespace }}
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - host: btc-exporter.local
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: bitcoin-stack-bitcoin-exporter
+                name: {{ include "bitcoin-exporter.fullname" . }}
                 port:
-                  number: 9100
+                  number: {{ .Values.service.port }}
