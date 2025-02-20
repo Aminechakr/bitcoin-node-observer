@@ -17,25 +17,30 @@ spec:
     metadata:
       labels:
         app: {{ include "bitcoin-exporter.name" . }}
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "bitcoin-stack"
+        vault.hashicorp.com/agent-inject-secret-bitcoin: "secret/data/bitcoin-stack"
+        vault.hashicorp.com/agent-inject-template-bitcoin: |
+          {{`{{- with secret "secret/data/bitcoin-stack" -}}
+          export RPC_USER="{{ .Data.data.rpcuser }}"
+          export RPC_PASSWORD="{{ .Data.data.rpcpassword }}"
+          {{- end -}}`}}
     spec:
+      serviceAccountName: vault-auth-bitcoin
       containers:
         - name: bitcoin-exporter
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              source /vault/secrets/bitcoin
+              ./bitcoin-exporter
           env:
             - name: RPC_URL
               value: {{ .Values.config.rpcURL | quote }}
             - name: METRICS_PORT
               value: {{ .Values.config.metricsPort | quote }}
-            - name: RPC_USER
-              valueFrom:
-                secretKeyRef:
-                  name: bitcoin-exporter-secret
-                  key: rpcuser
-            - name: RPC_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: bitcoin-exporter-secret
-                  key: rpcpassword
           ports:
             - containerPort: {{ .Values.config.metricsPort }}

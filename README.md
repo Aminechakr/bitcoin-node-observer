@@ -14,7 +14,7 @@ The project consists of three main components:
 ## Quick Start
 
 ### Prerequisites
-- Kubernetes cluster (local or remote)
+- Kubernetes cluster (local or remote) Rancher Desktop can be a simple and efficient solution for local deployment.
 - Helm 3.x
 - kubectl configured
 - [k9s](https://k9scli.io/) (optional)

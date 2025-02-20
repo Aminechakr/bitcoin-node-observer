@@ -1,0 +1,25 @@
+vault: 
+  global:
+    enabled: true
+    namespace: vault
+  server:
+    enabled: true
+    dataStorage:
+      storageClass: "local-path"
+    standalone:
+      enabled: true
+    ha:
+      enabled: false
+      replicas: 2
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      pathType: Prefix
+      hosts:
+        - host: vault.local
+          paths:
+            - "/"
+    injector:
+      enabled: true

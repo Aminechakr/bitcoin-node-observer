@@ -1,0 +1,135 @@
+
+prometheus:
+  forceNamespace: monitoring
+  alertmanager:
+    enabled: false
+  pushgateway:
+    enabled: false
+  server:
+    service:
+      type: ClusterIP
+    resources:
+      requests:
+        memory: 400Mi
+        cpu: 200m
+      limits:
+        memory: 800Mi
+        cpu: 400m
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      hosts:
+        - "prometheus.local"
+      path: /
+      pathType: Prefix
+  extraScrapeConfigs: |
+    - job_name: 'btc-exporter'
+      scrape_interval: 10s
+      static_configs:
+        - targets: ['bitcoin-stack-bitcoin-exporter.bitcoind.svc.cluster.local:9100']
+  
+  #The following subcharts are disabled from the prometheus chart to be managed properly under the umbrella chart.
+  kube-state-metrics:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+
+## kube-state-metrics sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics
+##
+kube-state-metrics:
+  enabled: true
+  namespaceOverride: monitoring
+## prometheus-node-exporter sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-node-exporter
+##
+prometheus-node-exporter:
+  enabled: true
+  namespaceOverride: monitoring
+  rbac:
+    pspEnabled: false
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+## prometheus-pushgateway sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-pushgateway
+##
+prometheus-pushgateway:
+  enabled: true
+  namespaceOverride: monitoring
+  serviceAnnotations:
+    prometheus.io/probe: pushgateway
+
+grafana:
+  namespaceOverride: monitoring
+  serviceAccount:
+    create: false
+    name: vault-auth-grafana
+  podAnnotations:
+    vault.hashicorp.com/agent-inject: "true"
+    vault.hashicorp.com/agent-inject-secret-grafana: "secret/data/grafana"
+    vault.hashicorp.com/role: "grafana"
+    vault.hashicorp.com/agent-inject-template-grafana: |
+      {{- with secret "secret/data/grafana" -}}
+      {
+        "GF_SECURITY_ADMIN_USER": "{{ .Data.data.adminUser }}",
+        "GF_SECURITY_ADMIN_PASSWORD": "{{ .Data.data.adminPassword }}"
+      }
+      {{- end }}
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      memory: 200Mi
+      cpu: 100m
+    limits:
+      memory: 400Mi
+      cpu: 200m
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://bitcoin-stack-prometheus-server:80
+          isDefault: true
+  dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: 'default'
+            orgId: 1
+            folder: ''
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      btc-dashboard:
+        url: https://gist.githubusercontent.com/Aminechakr/daae256f64bf21eb8f10998ffd3ac7a5/raw/eb0655db43ef82cce7a14a793d7da67d6aa91ba2/btc_exporter.json
+        datasource: Prometheus
+      kubernetes-resources:
+        gnetId: 6417 
+        revision: 1
+        datasource: Prometheus
+  rbac:
+    pspEnabled: false
+  podSecurityPolicy:
+    enabled: false
+  testFramework:
+    enabled: false
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hosts:
+      - "grafana.local"
+    path: /
+    pathType: Prefix
