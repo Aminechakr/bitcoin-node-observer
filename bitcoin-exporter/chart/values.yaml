@@ -12,9 +12,5 @@ config:
   rpcURL: "http://bitcoind:38332"
   metricsPort: 9100
 
-secret:
-  rpcuser: "foo" #Fetched from bitcoind secret using Helm's lookup function
-  rpcpassword: "bar" #Fetched from bitcoind secret using Helm's lookup function
-
 ingress:
   host: btc-exporter.local

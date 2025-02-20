@@ -6,15 +6,16 @@ A Kubernetes-based Bitcoin Signet node with custom metrics exporter and monitori
 
 ## Architecture
 
-The project consists of three main components:
+The project consists of four main components:
 - Bitcoin Signet Node (StatefulSet)
 - Custom Bitcoin Metrics Exporter
 - Monitoring Stack (Prometheus + Grafana)
+- HashiCorp Vault for Secret Management
 
 ## Quick Start
 
 ### Prerequisites
-- Kubernetes cluster (local or remote)
+- Kubernetes cluster (local or remote) - Rancher Desktop recommended for local deployment.
 - Helm 3.x
 - kubectl configured
 - [k9s](https://k9scli.io/) (optional)
@@ -22,9 +23,7 @@ The project consists of three main components:
 ### One-Click Deployment
 
 ```bash
-cd bitcoin-stack
-helm dependency update
-helm install bitcoin-stack .
+make deploy-all
 ```
 
 For detailed configuration options, see [Bitcoin Stack Documentation](./bitcoin-stack/README.md).
@@ -33,21 +32,6 @@ For detailed configuration options, see [Bitcoin Stack Documentation](./bitcoin-
 
 ### 1. Bitcoin Node (Signet)
 The Bitcoin node runs as a StatefulSet in Kubernetes, ensuring persistent blockchain data and stable networking.
-
-Quick test with Docker:
-```bash
-docker run --rm -it \
-  bitcoin/bitcoin \
-  -p 38332:38332 \
-  -p 38333:38333 \
-  -printtoconsole \
-  -signet=1 \
-  -rpcallowip=0.0.0.0/0 \
-  -rpcbind=0.0.0.0 \
-  -rpcuser=foo \
-  -rpcpassword=bar \
-  -rpcport=38332
-```
 
 For detailed node configuration, see [Bitcoin Node Documentation](./bitcoind/README.md).
 
@@ -61,6 +45,11 @@ Features:
 
 For build instructions and configuration, see [Exporter Documentation](./bitcoin-exporter/README.md).
 
+#### Deploys Bitcoin stack ( Node + exporter )
+```bash
+make deploy-bitcoin-stack
+```
+
 ### 3. Monitoring Stack
 Includes:
 - Prometheus for metrics collection
@@ -72,13 +61,20 @@ Access the dashboards:
 - Prometheus: http://prometheus.local
 - BTC exporter: http://btc-exporter.local
 
+#### Deploys Observability stack
+
+```bash
+make deploy-monitoring
+```
+
 ## Project Structure
 ```
 .
 ├── bitcoin-exporter/     # Custom Prometheus exporter
-├── bitcoin-stack/        # Umbrella Helm chart
-├── bitcoind/            # Bitcoin node Helm chart
-└── dashboards/          # Grafana dashboards
+├── bitcoin-stack/        # Bitcoin stack Umbrella chart
+├── bitcoind/             # Bitcoin node Helm chart
+├── observability/        # Observability chart
+└── vault/                # Vault chart
 ```
 
 ## Contributing
