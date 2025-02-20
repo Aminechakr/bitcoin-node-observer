@@ -46,6 +46,7 @@ EOF
     bound_service_account_namespaces=monitoring \
     policies=grafana \
     ttl=1h
+    echo "All secrets, policies and roles created."
 else
     echo "Vault is not ready. Please ensure Vault is initialized and unsealed."
     exit 1

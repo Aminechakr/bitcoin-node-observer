@@ -3,20 +3,12 @@
 export VAULT_ADDR='http://vault.local'
 export VAULT_SKIP_VERIFY=true
 
-wait_for_vault() {
-    echo "Waiting for Vault to be ready..."
-    while true; do
-        # Check if Vault is reachable
-        if curl -s -o /dev/null --head --fail "$VAULT_ADDR/v1/sys/health"; then
-            echo "Vault is ready!"
-            break
-        else
-            echo "Vault is not ready yet. Retrying in 5 seconds..."
-            sleep 5
-        fi
-    done
-}
-wait_for_vault
+echo "Waiting for Vault to be online..."
+until curl -s ${VAULT_ADDR}/v1/sys/health > /dev/null; do
+    echo "Vault is not online yet, retrying in 5 seconds..."
+    sleep 5
+done
+echo "Vault is online!"
 
 # Check if Vault is already initialized
 INIT_STATUS=$(vault status -format=json 2>/dev/null)

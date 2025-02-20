@@ -52,13 +52,13 @@ deploy-bitcoin-stack:
 	@echo "Bitcoin Stack deployed successfully!"
 
 # Target to deploy everything in the correct order
-deploy-all: deploy-vault deploy-monitoring deploy-bitcoin-stack
+deploy-all: deploy-vault configure-vault create-secrets deploy-monitoring deploy-bitcoin-stack
 	@echo "All components deployed successfully!"
 
-# Target to clean up resources (optional)
+# Target to clean up resources
 clean:
 	@echo "Cleaning up resources..."
-	helm uninstall vault || echo "Vault not installed."
-	helm uninstall monitoring || echo "Monitoring not installed."
-	helm uninstall bitcoin-stack || echo "Bitcoin Stack not installed."
+	@helm uninstall vault 2>/dev/null || true
+	@helm uninstall monitoring 2>/dev/null || true
+	@helm uninstall bitcoin-stack 2>/dev/null || true
 	@echo "Cleanup complete!"
