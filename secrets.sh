@@ -44,7 +44,7 @@ EOF
     vault write auth/kubernetes/role/grafana \
     bound_service_account_names=vault-auth-grafana \
     bound_service_account_namespaces=monitoring \
-    policies=bitcoin-stack \
+    policies=grafana \
     ttl=1h
 else
     echo "Vault is not ready. Please ensure Vault is initialized and unsealed."

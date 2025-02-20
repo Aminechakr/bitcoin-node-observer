@@ -74,11 +74,24 @@ grafana:
     vault.hashicorp.com/role: "grafana"
     vault.hashicorp.com/agent-inject-template-grafana: |
       {{- with secret "secret/data/grafana" -}}
-      {
-        "GF_SECURITY_ADMIN_USER": "{{ .Data.data.adminUser }}",
-        "GF_SECURITY_ADMIN_PASSWORD": "{{ .Data.data.adminPassword }}"
-      }
+      export GF_SECURITY_ADMIN_USER="{{ .Data.data.adminUser }}"
+      export GF_SECURITY_ADMIN_PASSWORD="{{ .Data.data.adminPassword }}"
       {{- end }}
+  command: ["/bin/sh", "-c"]
+  args:
+    - |
+      source /vault/secrets/grafana
+      /run.sh
+  admin:
+    existingSecret: ""
+    userKey: ""
+    passwordKey: ""
+  # Disable auto-generated secrets
+  env: {}
+  envFromSecret: ""
+  # Initialize with empty admin credentials to allow vault override
+  adminUser: ""
+  adminPassword: ""
   service:
     type: ClusterIP
   resources:
@@ -95,7 +108,7 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://bitcoin-stack-prometheus-server:80
+          url: http://monitoring-prometheus-server:80
           isDefault: true
   dashboardProviders:
       dashboardproviders.yaml:
