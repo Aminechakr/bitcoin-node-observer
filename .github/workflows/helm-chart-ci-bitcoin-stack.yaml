@@ -1,0 +1,52 @@
+name: Build and Deploy Bitcoin Stack Chart
+
+on:
+  push:
+    paths:
+      - 'bitcoin-stack/**'
+      - 'bitcoind/**'
+      - 'bitcoin-exporter/**'
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure Git
+      run: |
+        git config user.name "$GITHUB_ACTOR"
+        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.12.0
+
+    - name: Update Helm dependencies
+      run: helm dependency update ./bitcoin-stack
+
+    - name: Create kind cluster
+      uses: helm/kind-action@v1.8.0
+
+    - name: Run Helm install test
+      run: helm install test-release ./bitcoin-stack --dry-run
+
+    - name: Package Bitcoin Stack Chart
+      run: |
+        mkdir -p ./charts
+        helm package ./bitcoin-stack --destination ./charts
+
+    - name: Deploy Bitcoin Stack Helm Chart to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GH_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./charts
+        commit_message: "Deploy Bitcoin Stack Helm Chart"
+        force_orphan: true
+        destination_dir: .

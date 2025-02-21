@@ -2,6 +2,9 @@
 
 A Kubernetes-based Bitcoin Signet node with custom metrics exporter and monitoring stack.
 
+[![Helm Repository](https://img.shields.io/badge/Helm-Repository-blue)](https://aminechakr.github.io/bitcoin-node-observer/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 ![Dashboard Preview](image.png)
 
 ## Architecture
@@ -15,7 +18,7 @@ The project consists of four main components:
 ## Quick Start
 
 ### Prerequisites
-- Kubernetes cluster (local or remote) - Rancher Desktop recommended for local deployment.
+- Kubernetes cluster (local or remote) - Rancher Desktop recommended for local deployment, feel free to use Kind, K3s, Minikube or any other prefered tool.
 - Helm 3.x
 - kubectl configured
 - [k9s](https://k9scli.io/) (optional)

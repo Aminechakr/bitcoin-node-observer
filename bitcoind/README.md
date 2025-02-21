@@ -68,7 +68,7 @@ bitcoin-cli -rpcport=38332 -rpcuser=ojfknyQQ -rpcpassword=xxxxxxxxx getblockchai
 curl --user foo:xxxxxx --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getbestblockhash", "params": []}' -H 'content-type: text/plain;' http://localhost:38332/
 ````
 
-Quick test with Docker:
+- Quick test with Docker:
 ```bash
 docker run --rm -it \
   bitcoin/bitcoin \
