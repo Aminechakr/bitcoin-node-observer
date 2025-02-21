@@ -3,12 +3,12 @@ name: Helm Chart - Bitcoin Exporter Node
 on:
   push:
     paths:
-      - 'bitcoin-exporter/chart/**'
+      - 'bitcoin-exporter/**'
       - '.github/workflows/helm-chart-ci-exporter.yaml'
     branches: [ main ]
   pull_request:
     paths:
-      - 'bitcoin-exporter/chart/**'
+      - 'bitcoin-exporter/**'
     branches: [ main ]
 
 jobs:
