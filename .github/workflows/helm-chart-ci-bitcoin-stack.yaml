@@ -48,13 +48,17 @@ jobs:
         mkdir -p ./charts
         helm package ./bitcoin-stack --destination ./charts
 
+    - name: Checkout the gh-pages branch
+      run: |
+        git fetch origin
+        git checkout -b gh-pages origin/gh-pages || git checkout --orphan gh-pages
+            
     - name: Add index.html to gh-pages
       run: |
         cp ./index.html ./charts/index.html
         git add .
         git commit -m "Add index.html for Bitcoin Stack"
-        git fetch origin gh-pages || git checkout --orphan gh-pages
-        git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Aminechakr/bitcoin-node-observer.git gh-pages
+        git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Aminechakr/bitcoin-node-observer.git gh-pages --force
 
     - name: Deploy Bitcoin Stack Helm Chart to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4

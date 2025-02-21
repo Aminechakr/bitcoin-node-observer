@@ -63,14 +63,15 @@
     </header>
 
     <div class="container">
-        <h2>Helm Charts for Bitcoin Node and Exporter</h2>
-        <p>Welcome to the Bitcoin Node Observer Helm charts repository! This page provides two useful charts for managing Bitcoin nodes and monitoring their metrics:</p>
+        <h2>Helm Chart for Bitcoin Stack</h2>
+        <p>Welcome to the Bitcoin Node Observer Helm charts repository! This page provides the Bitcoin Stack chart that simplifies the deployment of Bitcoin node and Bitcoin exporter.</p>
         
-        <h3>1. Bitcoin Signet Node</h3>
-        <p>This chart will help you set up a Bitcoin signet node on your infrastructure, allowing you to interact with the Bitcoin testnet.</p>
-        
-        <h3>2. BTC Exporter</h3>
-        <p>Use this chart to deploy a Bitcoin exporter to fetch metrics from your Bitcoin node. It's perfect for monitoring node performance and availability.</p>
+        <h3>Bitcoin Stack Overview</h3>
+        <p>The Bitcoin Stack chart is an umbrella chart that deploys the necessary components to run a Bitcoin signet node and monitor its metrics using an exporter. The chart includes:</p>
+        <ul>
+            <li>Bitcoin Signet Node</li>
+            <li>BTC Exporter for node performance</li>
+        </ul>
 
         <h3>How to Install</h3>
         <p>To get started, add this repository to your Helm configuration:</p>
@@ -78,10 +79,9 @@
 helm repo add bitcoin-node-observer https://aminechakr.github.io/bitcoin-node-observer/
 helm repo update
         </pre>
-        <p>Then, you can install either of the charts:</p>
+        <p>Then, you can install the Bitcoin Stack chart:</p>
         <pre>
-helm install <release-name> bitcoin-node-observer/bitcoind
-helm install <release-name> bitcoin-node-observer/bitcoin-exporter
+helm install <release-name> bitcoin-node-observer/bitcoin-stack
         </pre>
 
         <footer>
