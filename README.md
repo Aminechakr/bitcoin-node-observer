@@ -2,6 +2,9 @@
 
 A Kubernetes-based Bitcoin Signet node with custom metrics exporter and monitoring stack.
 
+[![Helm Repository](https://img.shields.io/badge/Helm-Repository-blue)](https://aminechakr.github.io/bitcoin-node-observer/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 ![Dashboard Preview](image.png)
 
 ## Architecture
