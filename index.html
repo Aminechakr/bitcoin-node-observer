@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Node Observer - Helm Charts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #333;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .bitcoin-icon {
+            width: 100px;
+            margin: 20px 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: left;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bitcoin Node Observer</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1024px-Bitcoin.svg.png" alt="Bitcoin Logo" class="bitcoin-icon">
+    </header>
+
+    <div class="container">
+        <h2>Helm Charts for Bitcoin Node and Exporter</h2>
+        <p>Welcome to the Bitcoin Node Observer Helm charts repository! This page provides two useful charts for managing Bitcoin nodes and monitoring their metrics:</p>
+        
+        <h3>1. Bitcoin Signet Node</h3>
+        <p>This chart will help you set up a Bitcoin signet node on your infrastructure, allowing you to interact with the Bitcoin testnet.</p>
+        
+        <h3>2. BTC Exporter</h3>
+        <p>Use this chart to deploy a Bitcoin exporter to fetch metrics from your Bitcoin node. It's perfect for monitoring node performance and availability.</p>
+
+        <h3>How to Install</h3>
+        <p>To get started, add this repository to your Helm configuration:</p>
+        <pre>
+helm repo add bitcoin-node-observer https://aminechakr.github.io/bitcoin-node-observer/
+helm repo update
+        </pre>
+        <p>Then, you can install either of the charts:</p>
+        <pre>
+helm install <release-name> bitcoin-node-observer/bitcoind
+helm install <release-name> bitcoin-node-observer/bitcoin-exporter
+        </pre>
+
+        <footer>
+            <p>&copy; 2025 Bitcoin Node Observer | <a href="https://github.com/aminechakr/bitcoin-node-observer" style="color: #fff;">GitHub Repository</a></p>
+        </footer>
+    </div>
+
+</body>
+</html>

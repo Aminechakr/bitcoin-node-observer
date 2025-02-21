@@ -1,3 +1,5 @@
+name: Exporter CI
+
 on:
     push:
       paths:
