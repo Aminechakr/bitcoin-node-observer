@@ -8,6 +8,13 @@ on:
       - 'bitcoin-exporter/**'
     branches:
       - main
+  pull_request:
+    paths:
+      - 'bitcoin-stack/**'
+      - 'bitcoind/**'
+      - 'bitcoin-exporter/**'
+    branches:
+      - main
 
 jobs:
   build:
