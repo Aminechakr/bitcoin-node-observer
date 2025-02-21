@@ -53,7 +53,7 @@ jobs:
         cp ./index.html ./charts/index.html
         git add .
         git commit -m "Add index.html for Bitcoin Stack"
-        git push origin gh-pages
+        git push origin HEAD:gh-pages
 
     - name: Deploy Bitcoin Stack Helm Chart to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
