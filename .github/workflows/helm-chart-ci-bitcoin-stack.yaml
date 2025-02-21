@@ -53,6 +53,7 @@ jobs:
         cp ./index.html ./charts/index.html
         git add .
         git commit -m "Add index.html for Bitcoin Stack"
+        git fetch origin gh-pages || git checkout --orphan gh-pages
         git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Aminechakr/bitcoin-node-observer.git gh-pages
 
     - name: Deploy Bitcoin Stack Helm Chart to GitHub Pages
