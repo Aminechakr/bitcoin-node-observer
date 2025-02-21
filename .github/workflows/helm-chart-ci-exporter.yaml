@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'bitcoin-exporter/chart/**'
+      - '.github/workflows/helm-chart-ci-exporter.yaml'
     branches: [ main ]
   pull_request:
     paths:
