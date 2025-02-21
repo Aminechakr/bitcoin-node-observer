@@ -22,12 +22,12 @@ deploy-vault: build-vault-dependencies
 
 configure-vault:
 	@echo "Configuring and unsealing Vault..."
-	./configure.sh
+	./scripts/configure.sh
 	@echo "Vault configuration complete!"
 
 create-secrets:
 	@echo "Creating secrets in Vault..."
-	./secrets.sh
+	./scripts/secrets.sh
 	@echo "Secrets created successfully!"
 
 # Target to build Helm dependencies for Monitoring

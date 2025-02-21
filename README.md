@@ -18,7 +18,7 @@ The project consists of four main components:
 ## Quick Start
 
 ### Prerequisites
-- Kubernetes cluster (local or remote) - Rancher Desktop recommended for local deployment.
+- Kubernetes cluster (local or remote) - Rancher Desktop recommended for local deployment, feel free to use Kind, K3s, Minikube or any other prefered tool.
 - Helm 3.x
 - kubectl configured
 - [k9s](https://k9scli.io/) (optional)
