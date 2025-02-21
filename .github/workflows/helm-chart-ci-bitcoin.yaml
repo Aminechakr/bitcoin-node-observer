@@ -28,9 +28,6 @@ jobs:
     - name: Create kind cluster
       uses: helm/kind-action@v1.8.0
 
-    #- name: Set KUBECONFIG for KinD
-    #  run: echo "KUBECONFIG=${HOME}/.kube/config" >> $GITHUB_ENV
-
     - name: Run Helm install test
       run: helm install test-release ./bitcoind --dry-run
 
