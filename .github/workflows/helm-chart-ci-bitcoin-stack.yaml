@@ -32,9 +32,6 @@ jobs:
     - name: Update Helm dependencies
       run: helm dependency update ./bitcoin-stack
 
-    - name: Set up chart-testing
-      uses: helm/chart-testing-action@v2.6.1
-
     - name: Create kind cluster
       uses: helm/kind-action@v1.8.0
 
@@ -42,15 +39,9 @@ jobs:
       run: helm install test-release ./bitcoin-stack --dry-run
 
     - name: Package Bitcoin Stack Chart
-      run: helm package ./bitcoin-stack --destination ./charts
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      run: |
+        mkdir -p ./charts
+        helm package ./bitcoin-stack --destination ./charts
 
     - name: Add index.html to gh-pages
       run: |
