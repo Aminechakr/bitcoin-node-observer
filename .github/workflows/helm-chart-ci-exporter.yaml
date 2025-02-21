@@ -3,11 +3,11 @@ name: Helm Chart - Bitcoin Exporter Node
 on:
   push:
     paths:
-      - 'bitcoin-exporter/**'
+      - 'bitcoin-exporter/chart/**'
     branches: [ main ]
   pull_request:
     paths:
-      - 'bitcoin-exporter/**'
+      - 'bitcoin-exporter/chart/**'
     branches: [ main ]
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
       uses: helm/kind-action@v1.8.0
 
     - name: Run Helm install test
-      run: helm install test-release ./bitcoin-exporter --dry-run
+      run: helm install test-release ./bitcoin-exporter/chart --dry-run
 
   release:
     needs: install-test
@@ -44,7 +44,7 @@ jobs:
         version: v3.12.0
 
     - name: Package Helm Chart
-      run: helm package ./bitcoin-exporter --destination ./charts/bitcoin-exporter-chart
+      run: helm package ./bitcoin-exporter/chart --destination ./charts/bitcoin-exporter-chart
 
     - name: Deploy Helm Chart to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
