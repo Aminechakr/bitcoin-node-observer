@@ -1,0 +1,20 @@
+apiVersion: v1
+entries:
+  bitcoin-stack:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2025-02-21T03:33:44.394515+01:00"
+    dependencies:
+    - name: bitcoind
+      repository: file://../bitcoind
+      version: 0.0.1
+    - name: bitcoin-exporter
+      repository: file://../bitcoin-exporter/chart
+      version: 0.1.0
+    description: A Helm chart to deploy Bitcoin node, BTC exporter.
+    digest: 81da27333571f531a8938f8394b9404bf165a56939d6b708f0a217fd2a5cc4f3
+    name: bitcoin-stack
+    urls:
+    - bitcoin-stack-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-02-21T03:33:44.393249+01:00"
