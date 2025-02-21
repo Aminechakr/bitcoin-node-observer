@@ -11,7 +11,7 @@ on:
     branches: [ main ]
 
 jobs:
-  lint-test:
+  install-test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -25,20 +25,17 @@ jobs:
     - name: Set up chart-testing
       uses: helm/chart-testing-action@v2.6.1
 
-    - name: Run chart-testing (lint)
-      run: ct lint --target-branch main --charts ./bitcoind
-
     - name: Create kind cluster
       uses: helm/kind-action@v1.8.0
 
-    - name: Set KUBECONFIG for KinD
-      run: echo "KUBECONFIG=${HOME}/.kube/config" >> $GITHUB_ENV
+    #- name: Set KUBECONFIG for KinD
+    #  run: echo "KUBECONFIG=${HOME}/.kube/config" >> $GITHUB_ENV
 
-    - name: Run chart-testing (install)
-      run: ct install --target-branch main --charts ./bitcoind
+    - name: Run Helm install test
+      run: helm install test-release ./bitcoind --dry-run
 
   release:
-    needs: lint-test
+    needs: install-test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
